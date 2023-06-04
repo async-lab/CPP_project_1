@@ -22,7 +22,7 @@ jobs:
       - name: test_run
         run: |
           source .github/customs/envs
-          output=$(./build/($CUSTOM_RUN_FILE))
+          output=$(./build/Main)
           expected="Hello, World!"
           test "$output" = "$expected" && echo -e "[INFO] Test Passed! \n [信息] 测试通过！" || (echo -e "[ERROR] Test Failed! \n [错误] 测试失败！" && exit 1)
 
