@@ -1,2 +1,2 @@
 export CUSTOM_APT_INSTALL=""
-export EXECUTABLE_FILE=""
+export EXECUTABLE_FILE="Main"
