@@ -4,7 +4,7 @@ on:
     branches: [ "main" ]
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  test:
+  functional_test:
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -13,9 +13,32 @@ jobs:
         run: |
           sudo apt-get update
           source .github/customs/envs
-          sudo apt-get install cmake build-essential
+          sudo apt-get install cmake build-essential "$CUSTOM_APT_INSTALL" -y
       - name: test_cmake
-        run: cmake .
-#    self_test:
-#      runs-on: ubuntu-latest
+        run: | 
+           cmake . && CMakeFlag=1 || (echo "[ERROR] CMake Failed, Please Check Your CMakelists.txt\n[错误] 你的CMake配置存在问题，请检查你的CMakeLists.txt！\n [note]如果你需要使用某些第三方依赖,请修改env文件,添加上所需要的依赖。" ; CMakeFlag=0 && exit 1)
+           test 1 -eq $CMakeFlag && make || echo "[ERROR] Make Failed! \n [错误] 编译失败。" && exit 1
+      - name: test_run
+        run: |
+          source .github/customs/envs
+          
+
+    code_quality_test:
+      runs-on: ubuntu-latest
       # 准备执行脚本完整性检测
+      steps:
+        - uses: actions/checkout@v3
+        - name: Environment Setup
+          run: |
+            sudo apt-get update
+            source .github/customs/envs
+            sudo apt-get install cmake build-essential "$CUSTOM_APT_INSTALL" -y
+        - name: if_class_is_used
+          run: |
+            source .github/customs/envs
+            bash .github/customs/classTest.sh
+        - name: test_code_quality
+          run: |
+            source .github/customs/envs
+            sudo apt-get install cppcheck -y
+            cppcheck --enable=all --error-exitcode=1 .
