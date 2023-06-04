@@ -23,22 +23,22 @@ jobs:
           source .github/customs/envs
           
 
-    code_quality_test:
-      runs-on: ubuntu-latest
-      # 准备执行脚本完整性检测
-      steps:
-        - uses: actions/checkout@v3
-        - name: Environment Setup
-          run: |
-            sudo apt-get update
-            source .github/customs/envs
-            sudo apt-get install cmake build-essential "$CUSTOM_APT_INSTALL" -y
-        - name: if_class_is_used
-          run: |
-            source .github/customs/envs
-            bash .github/customs/classTest.sh
-        - name: test_code_quality
-          run: |
-            source .github/customs/envs
-            sudo apt-get install cppcheck -y
-            cppcheck --enable=all --error-exitcode=1 .
+  code_quality_test:
+    runs-on: ubuntu-latest
+    # 准备执行脚本完整性检测
+    steps:
+      - uses: actions/checkout@v3
+      - name: Environment Setup
+        run: |
+          sudo apt-get update
+          source .github/customs/envs
+          sudo apt-get install cmake build-essential "$CUSTOM_APT_INSTALL" -y
+      - name: if_class_is_used
+        run: |
+          source .github/customs/envs
+          bash .github/customs/classTest.sh
+      - name: test_code_quality
+        run: |
+          source .github/customs/envs
+          sudo apt-get install cppcheck -y
+          cppcheck --enable=all --error-exitcode=1 .
