@@ -1,8 +1,16 @@
 name: Automation_code_test
 on:
   push:
-    branches: [ "main" ]
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+    branches:
+      - "main"
+      - "dev"
+  pull_request:
+    branches:
+      - "main"
+      # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+env:
+  BUILD_TYPE: Release
+
 jobs:
   functional_test:
     runs-on: ubuntu-latest
@@ -14,17 +22,25 @@ jobs:
           sudo apt-get update
           source .github/customs/envs
           sudo apt-get install cmake build-essential "$CUSTOM_APT_INSTALL" -y
+          echo -e "[INFO] Environment Setup Done! \n [信息] 环境配置完成！"
       - name: test_cmake
         run: | 
            mkdir build ; cd build
-           cmake .. && CMakeFlag=1 || (echo -e "[ERROR] CMake Failed, Please Check Your CMakelists.txt\n[错误] 你的CMake配置存在问题，请检查你的CMakeLists.txt！\n[note] 如果你需要使用某些第三方依赖,请修改env文件,添加上所需要的依赖。" ; CMakeFlag=0 && exit 1)
-           test 1 -eq $CMakeFlag && make
+           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} && CMakeFlag=1 || (echo -e "[ERROR] CMake Failed, Please Check Your CMakelists.txt\n[错误] 你的CMake配置存在问题，请检查你的CMakeLists.txt！\n[note] 如果你需要使用某些第三方依赖,请修改env文件,添加上所需要的依赖。" ; CMakeFlag=0 && exit 1)
+           test 1 -eq $CMakeFlag && cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+           echo -e "[INFO] CMake Done! \n [信息] CMake&Make执行完成！"
+
       - name: test_run
         run: |
           source .github/customs/envs
           output=$(./build/Main)
           expected="Hello, World!"
           test "$output" = "$expected" && echo -e "[INFO] Test Passed! \n [信息] 测试通过！" || (echo -e "[ERROR] Test Failed! \n [错误] 测试失败！" && exit 1)
+
+      - name: Custom CTest
+        working-directory: ${{github.workspace}}/build
+        run: ctest -C ${{env.BUILD_TYPE}}
+
 
   code_quality_test:
     runs-on: ubuntu-latest
@@ -36,7 +52,7 @@ jobs:
           sudo apt-get update
           source .github/customs/envs
           sudo apt-get install cmake build-essential "$CUSTOM_APT_INSTALL" -y
-      - name: if_class_is_used
+      - name: if_cpp_is_used
         run: |
           source .github/customs/envs
           bash .github/customs/classTest.sh
