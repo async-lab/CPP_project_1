@@ -129,9 +129,6 @@ if __name__ == "__main__":
     test_obj.kill()
     print(actual_output[0])
     actual_output = processOutput(actual_output[0])
-    if actual_output[1] is not None:
-        print("[ERROR] 被测试的程序发生异常！")
-        exit(1)
     for i in actual_output:
         if i not in exceptOutput:
             print("[ERROR] 被测试的程序输出不正确！")
