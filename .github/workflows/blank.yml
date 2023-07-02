@@ -29,13 +29,6 @@ jobs:
            test 1 -eq $CMakeFlag && cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
            echo -e "[INFO] CMake Done! \n [信息] CMake&Make执行完成！"
 
-      - name: test_run
-        run: |
-          source .github/customs/envs
-          output=$(./build/Main)
-          expected="Hello, World!"
-          test "$output" = "$expected" && echo -e "[INFO] Test Passed! \n [信息] 测试通过！" || (echo -e "[ERROR] Test Failed! \n [错误] 测试失败！" && exit 1)
-
       - name: Custom CTest
         working-directory: ${{github.workspace}}/build
         run: ctest -C ${{env.BUILD_TYPE}}
