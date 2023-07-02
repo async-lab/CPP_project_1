@@ -111,7 +111,7 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("[ERROR] 脚本调用参数不正确！")
         exit(3)
-    print("[INFO] 添加学生测试开始")
+    print("[INFO] 添加信息测试开始")
     test_obj = subprocess.Popen(sys.argv[1], stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True,
                                 stderr=subprocess.STDOUT, shell=True)
     test_input = "1\r\ntestUser1\r\nM\r\n2001-02-03\r\ntestUser1@cuit.edu.cn\r\n"
