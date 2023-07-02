@@ -52,7 +52,7 @@ def processOutput(strobj):
     data = [], [], [], [], [], [], []
     splited = strobj.split("$")
     # 用于移除字符串头的空字符串，和防止非标准的末尾$符号产生的空字符串让脚本崩溃
-    splited = splited.remove(0)
+    splited = splited.remove(splited[0])
     for i in splited:
         if len(i) == 0:
             splited.remove(i)
