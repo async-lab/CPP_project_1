@@ -52,6 +52,7 @@ def processOutput(strobj):
     data = [], [], [], [], [], [], []
     splited = strobj.split("$")
     # 用于移除字符串头的空字符串，和防止非标准的末尾$符号产生的空字符串让脚本崩溃
+    splited = splited.remove(0)
     for i in splited:
         if len(i) == 0:
             splited.remove(i)
@@ -132,9 +133,13 @@ if __name__ == "__main__":
     for i in actual_output:
         if i not in exceptOutput:
             print("[ERROR] 被测试的程序输出不正确！")
+            test_subject = ["UID", "用户名", "性别", "出生日期", "邮箱", "年龄", "硬币"]
             place = actual_output.index(i)
-            print("[ERROR] 实际输出："+str(i))
+            print("[ERROR] 当前测试的数据为: "+test_subject[place])
+            print("[ERROR] 匹配到的实际输出："+str(i))
             print("[ERROR] 期望输出："+str(exceptOutput[place]))
+            print("[ERROR] 原始输出为:" )
+            print(actual_output[0])
             exit(1)
     print("[INFO] 测试结束")
     exit(0)
