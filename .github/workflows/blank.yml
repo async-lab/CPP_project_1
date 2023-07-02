@@ -44,7 +44,10 @@ jobs:
         run: |
           source .github/customs/envs
           python3 .github/customs/python/addInfoTest.py ${{github.workspace}}/build/Main
-
+      - name: deleteInfoTest
+        run: |
+          source .github/customs/envs
+          python3 .github/customs/python/deleteTest.py ${{github.workspace}}/build/Main
   code_quality_test:
     runs-on: ubuntu-latest
     # 准备执行脚本完整性检测
