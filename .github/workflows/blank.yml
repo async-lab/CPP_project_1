@@ -43,7 +43,7 @@ jobs:
       - name: addInfoTest
         run: |
           source .github/customs/envs
-          python3 .github/customs/python/addInfoTest.py
+          python3 .github/customs/python/addInfoTest.py ${{github.workspace}}/build/Main
 
   code_quality_test:
     runs-on: ubuntu-latest
