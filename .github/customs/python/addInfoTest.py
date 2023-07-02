@@ -125,13 +125,13 @@ if __name__ == "__main__":
     watchdog = threading.Thread(target=testProgramWatchDog)
     watchdog.start()
     try:
-        actual_output = test_obj.communicate(timeout=5)
+        origin_output = test_obj.communicate(timeout=5)
     except subprocess.TimeoutExpired:
         print("[ERROR] 被测试程序无法在规定时间内结束！")
         exit(2)
     test_obj.kill()
-    print(actual_output[0])
-    actual_output = processOutput(actual_output[0])
+    print(origin_output[0])
+    actual_output = processOutput(origin_output[0])
     for i in actual_output:
         if i not in exceptOutput:
             print("[ERROR] 被测试的程序输出不正确！")
@@ -141,7 +141,7 @@ if __name__ == "__main__":
             print("[ERROR] 匹配到的实际输出："+str(i))
             print("[ERROR] 期望输出："+str(exceptOutput[place]))
             print("[ERROR] 原始输出为:" )
-            print(actual_output[0])
+            print(origin_output[0])
             exit(1)
     print("[INFO] 测试结束")
     exit(0)
