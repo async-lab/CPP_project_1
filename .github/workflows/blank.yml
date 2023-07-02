@@ -21,7 +21,7 @@ jobs:
         run: |
           sudo apt-get update
           source .github/customs/envs
-          sudo apt-get install cmake build-essential "$CUSTOM_APT_INSTALL" -y
+          sudo apt-get install cmake build-essential python3-full "$CUSTOM_APT_INSTALL" -y
           echo -e "[INFO] Environment Setup Done! \n [信息] 环境配置完成！"
       - name: test_cmake
         run: | 
@@ -40,6 +40,10 @@ jobs:
         working-directory: ${{github.workspace}}/build
         run: ctest -C ${{env.BUILD_TYPE}}
 
+      - name: addInfoTest
+        run: |
+          source .github/customs/envs
+          python3 .github/customs/python/addInfoTest.py
 
   code_quality_test:
     runs-on: ubuntu-latest
