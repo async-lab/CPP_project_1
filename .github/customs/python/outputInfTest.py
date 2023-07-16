@@ -1,3 +1,5 @@
+# 由于测试点2与测试点3基本一致，所以延用add的测试
+
 import time
 import subprocess
 import sys
@@ -79,7 +81,7 @@ def testProgramWatchDog():
     time.sleep(3)
     if test_obj.poll() is None:
         test_obj.send_signal(9)
-        print("[INFO] 被测试的程序未自动退出！")
+        print("[WARNING] 被测试的程序超时！")
 
 
 def calculateAge(birthday):
@@ -99,18 +101,19 @@ def calculateAge(birthday):
     return age
 
 
-exceptOutput = ["1", "2", "4", "5"], ["testUser1", "testUser2", "testUser4", "testUser5"], \
-    ["男", "女", "女", "男"], ["2001-02-03", "2002-03-04",  "1984-05-06", "2011-06-07"], \
-    ["testUser1@cuit.edu.cn", "testUser2@cuit.edu.cn",  "testUser4@cuit.edu.cn", "testUser5@cuit.edu.cn"], \
-    [calculateAge("2001-02-03"), calculateAge("2002-03-04"),
+exceptOutput = ["1", "2", "3", "4", "5"], ["testUser1", "testUser2", "testUser3", "testUser4", "testUser5"], \
+    ["男", "女", "男", "女", "男"], ["2001-02-03", "2002-03-04", "2003-04-05", "1984-05-06", "2011-06-07"], \
+    ["testUser1@cuit.edu.cn", "testUser2@cuit.edu.cn", "testUser3@cuit.edu.cn",
+     "testUser4@cuit.edu.cn", "testUser5@cuit.edu.cn"], \
+    [calculateAge("2001-02-03"), calculateAge("2002-03-04"), calculateAge("2003-04-05"),
      calculateAge("1984-05-06"), calculateAge("2011-06-07")], \
-    ["100", "100", "100", "100"]
+    ["100", "100", "100", "100", "100"]
 
-if __name__ == "__main__":
+if __name__ == "__main__": # 查看是否是直接调用
     if len(sys.argv) != 2:
         print("[ERROR] 脚本调用参数不正确！")
         exit(3)
-    print("[INFO] 删除信息测试开始")
+    print("[INFO] 添加信息测试开始")
     test_obj = subprocess.Popen(sys.argv[1], stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True,
                                 stderr=subprocess.STDOUT, shell=True)
     test_input = "1\r\ntestUser1\r\nM\r\n2001-02-03\r\ntestUser1@cuit.edu.cn\r\n"
@@ -118,7 +121,7 @@ if __name__ == "__main__":
     test_input += "1\r\ntestUser3\r\nM\r\n2003-04-05\r\ntestUser3@cuit.edu.cn\r\n"
     test_input += "1\r\ntestUser4\r\nF\r\n1984-05-06\r\ntestUser4@cuit.edu.cn\r\n"
     test_input += "1\r\ntestUser5\r\nM\r\n2011-06-07\r\ntestUser5@cuit.edu.cn\r\n"
-    test_input += "3\r\ntestUser3\r\n"
+    test_input += "2\r\n"
     test_obj.stdin.write(test_input)
     test_obj.stdin.flush()
     watchdog = threading.Thread(target=testProgramWatchDog)
