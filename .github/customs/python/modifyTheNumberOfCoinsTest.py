@@ -105,9 +105,9 @@ exceptOutput = ["1", "2", "3", "4", "5"], ["testUser1", "testUser2", "testUser3"
      "testUser4@cuit.edu.cn", "testUser5@cuit.edu.cn"], \
     [calculateAge("2001-02-03"), calculateAge("2002-03-04"), calculateAge("2003-04-05"),
      calculateAge("1984-05-06"), calculateAge("2011-06-07")], \
-    ["100", "100", "100", "100", "100"]
+    ["997", "399", "244", "520", "1314"]
 
-if __name__ == "__main__":
+if __name__ == "__main__": # 查看是否是直接调用
     if len(sys.argv) != 2:
         print("[ERROR] 脚本调用参数不正确！")
         exit(3)
@@ -119,6 +119,11 @@ if __name__ == "__main__":
     test_input += "1\r\ntestUser3\r\nM\r\n2003-04-05\r\ntestUser3@cuit.edu.cn\r\n"
     test_input += "1\r\ntestUser4\r\nF\r\n1984-05-06\r\ntestUser4@cuit.edu.cn\r\n"
     test_input += "1\r\ntestUser5\r\nM\r\n2011-06-07\r\ntestUser5@cuit.edu.cn\r\n"
+    test_input += "4\r\ntestUser1\r\n997\r\n"
+    test_input += "4\r\ntestUser2\r\n399\r\n"
+    test_input += "4\r\ntestUser3\r\n244\r\n"
+    test_input += "4\r\ntestUser4\r\n520\r\n"
+    test_input += "4\r\ntestUser5\r\n1314\r\n"
     test_input += "2\r\n"
     test_obj.stdin.write(test_input)
     test_obj.stdin.flush()

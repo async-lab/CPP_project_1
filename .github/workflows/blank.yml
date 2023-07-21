@@ -41,6 +41,18 @@ jobs:
         run: |
           source .github/customs/envs
           python3 .github/customs/python/deleteTest.py ${{github.workspace}}/build/Main
+      - name: modifyTheNumberOfCoinsTest
+        run: |
+          source .github/customs/envs
+          python3 .github/customs/python/modifyTheNumberOfCoinsTest.py ${{github.workspace}}/build/Main
+      - name: sortTest
+        run: |
+          source .github/customs/envs
+          python3 .github/customs/python/sortTest.py ${{github.workspace}}/build/Main
+      - name: saveTest
+        run: |
+          source .github/customs/envs
+          python3 .github/customs/python/saveTest.py ${{github.workspace}}/build/Main
   code_quality_test:
     runs-on: ubuntu-latest
     # 准备执行脚本完整性检测

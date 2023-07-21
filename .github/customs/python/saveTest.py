@@ -107,11 +107,12 @@ exceptOutput = ["1", "2", "3", "4", "5"], ["testUser1", "testUser2", "testUser3"
      calculateAge("1984-05-06"), calculateAge("2011-06-07")], \
     ["100", "100", "100", "100", "100"]
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # 查看是否是直接调用
     if len(sys.argv) != 2:
         print("[ERROR] 脚本调用参数不正确！")
         exit(3)
     print("[INFO] 添加信息测试开始")
+    # 第二次创建，检测是否sava
     test_obj = subprocess.Popen(sys.argv[1], stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True,
                                 stderr=subprocess.STDOUT, shell=True)
     test_input = "1\r\ntestUser1\r\nM\r\n2001-02-03\r\ntestUser1@cuit.edu.cn\r\n"
@@ -119,7 +120,14 @@ if __name__ == "__main__":
     test_input += "1\r\ntestUser3\r\nM\r\n2003-04-05\r\ntestUser3@cuit.edu.cn\r\n"
     test_input += "1\r\ntestUser4\r\nF\r\n1984-05-06\r\ntestUser4@cuit.edu.cn\r\n"
     test_input += "1\r\ntestUser5\r\nM\r\n2011-06-07\r\ntestUser5@cuit.edu.cn\r\n"
-    test_input += "2\r\n"
+    test_input += "6\r\n"
+    test_obj.stdin.write(test_input)
+    test_obj.stdin.flush()
+    test_obj.kill()
+    # 第二次创建，检查可用性
+    test_obj = subprocess.Popen(sys.argv[1], stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True,
+                                stderr=subprocess.STDOUT, shell=True)
+    test_input = "2\r\n"
     test_obj.stdin.write(test_input)
     test_obj.stdin.flush()
     watchdog = threading.Thread(target=testProgramWatchDog)
@@ -137,10 +145,10 @@ if __name__ == "__main__":
             print("[ERROR] 被测试的程序输出不正确！")
             test_subject = ["UID", "用户名", "性别", "出生日期", "邮箱", "年龄", "硬币"]
             place = actual_output.index(i)
-            print("[ERROR] 当前测试的数据为: "+test_subject[place])
-            print("[ERROR] 匹配到的实际输出："+str(i))
-            print("[ERROR] 期望输出："+str(exceptOutput[place]))
-            print("[ERROR] 原始输出为:" )
+            print("[ERROR] 当前测试的数据为: " + test_subject[place])
+            print("[ERROR] 匹配到的实际输出：" + str(i))
+            print("[ERROR] 期望输出：" + str(exceptOutput[place]))
+            print("[ERROR] 原始输出为:")
             print(origin_output[0])
             exit(1)
     print("[INFO] 测试结束")

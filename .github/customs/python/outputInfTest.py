@@ -1,3 +1,5 @@
+# 由于测试点2与测试点3基本一致，所以延用add的测试
+
 import time
 import subprocess
 import sys
@@ -107,7 +109,7 @@ exceptOutput = ["1", "2", "3", "4", "5"], ["testUser1", "testUser2", "testUser3"
      calculateAge("1984-05-06"), calculateAge("2011-06-07")], \
     ["100", "100", "100", "100", "100"]
 
-if __name__ == "__main__":
+if __name__ == "__main__": # 查看是否是直接调用
     if len(sys.argv) != 2:
         print("[ERROR] 脚本调用参数不正确！")
         exit(3)
