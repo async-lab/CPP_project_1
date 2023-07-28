@@ -15,6 +15,7 @@ def myReadLine(obj):
     return data
 
 
+
 def literRead(obj):
     data = ""
     t = obj.read(1)
@@ -79,7 +80,7 @@ def testProgramWatchDog():
     time.sleep(3)
     if test_obj.poll() is None:
         test_obj.send_signal(9)
-        print("[WARNING] 被测试的程序超时！")
+        # print("[WARNING] 被测试的程序超时！")
 
 
 def calculateAge(birthday):
