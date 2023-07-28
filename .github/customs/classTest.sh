@@ -11,4 +11,4 @@ else
   echo "[ERROR] 检测失败"
 fi
 find $dir -type f -name "file_name"
-exit $flagWARNww
+exit $flag
