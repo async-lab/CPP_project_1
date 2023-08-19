@@ -4,6 +4,14 @@ import sys
 import threading
 from encodings.utf_8 import encode
 from select import select
+import psutil
+
+
+def kill(proc_pid):
+    process = psutil.Process(proc_pid)
+    for proc in process.children(recursive=True):
+        proc.kill()
+        process.kill()
 
 
 def myReadLine(obj):
@@ -78,7 +86,7 @@ def processOutput(strobj):
 def testProgramWatchDog():
     time.sleep(3)
     if test_obj.poll() is None:
-        test_obj.send_signal(9)
+        kill(test_obj.pid)
         # print("[WARNING] 被测试的程序超时！")
 
 
@@ -134,8 +142,6 @@ if __name__ == "__main__": # 查看是否是直接调用
     except subprocess.TimeoutExpired:
         print("[ERROR] 被测试程序无法在规定时间内结束！")
         exit(2)
-    test_obj.kill()
-    print(origin_output[0])
     actual_output = processOutput(origin_output[0])
     for i in actual_output:
         if i not in exceptOutput:

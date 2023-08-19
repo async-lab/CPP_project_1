@@ -4,6 +4,14 @@ import sys
 import threading
 from encodings.utf_8 import encode
 from select import select
+import psutil
+
+
+def kill(proc_pid):
+    process = psutil.Process(proc_pid)
+    for proc in process.children(recursive=True):
+        proc.kill()
+        process.kill()
 
 
 def myReadLine(obj):
@@ -79,7 +87,7 @@ def processOutput(strobj):
 def testProgramWatchDog():
     time.sleep(3)
     if test_obj.poll() is None:
-        test_obj.send_signal(9)
+        kill(test_obj.pid)
         # print("[WARNING] 被测试的程序超时！")
 
 

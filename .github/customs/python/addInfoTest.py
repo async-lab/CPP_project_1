@@ -4,6 +4,14 @@ import sys
 import threading
 from encodings.utf_8 import encode
 from select import select
+import psutil
+
+
+def kill(proc_pid):
+    process = psutil.Process(proc_pid)
+    for proc in process.children(recursive=True):
+        proc.kill()
+        process.kill()
 
 
 def myReadLine(obj):
@@ -78,8 +86,8 @@ def processOutput(strobj):
 def testProgramWatchDog():
     time.sleep(3)
     if test_obj.poll() is None:
-        test_obj.send_signal(9)
-        # print("[WARNING] 被测试的程序超时！")
+        kill(test_obj.pid)
+        print("[INFO] 退出信号已发送给程序")
 
 
 def calculateAge(birthday):
@@ -127,20 +135,18 @@ if __name__ == "__main__":
     try:
         origin_output = test_obj.communicate(timeout=5)
     except subprocess.TimeoutExpired:
-        print("[ERROR] 被测试程序无法在规定时间内结束！")
+        print("[ERROR] 被测试程序无法在规定时间内结束！检查一下程序是否被stdin阻塞了！")
         exit(2)
-    test_obj.kill()
-    print(origin_output[0])
     actual_output = processOutput(origin_output[0])
     for i in actual_output:
         if i not in exceptOutput:
             print("[ERROR] 被测试的程序输出不正确！")
             test_subject = ["UID", "用户名", "性别", "出生日期", "邮箱", "年龄", "硬币"]
             place = actual_output.index(i)
-            print("[ERROR] 当前测试的数据为: "+test_subject[place])
-            print("[ERROR] 匹配到的实际输出："+str(i))
-            print("[ERROR] 期望输出："+str(exceptOutput[place]))
-            print("[ERROR] 原始输出为:" )
+            print("[ERROR] 当前测试的数据为: " + test_subject[place])
+            print("[ERROR] 匹配到的实际输出：" + str(i))
+            print("[ERROR] 期望输出：" + str(exceptOutput[place]))
+            print("[ERROR] 原始输出为:")
             print(origin_output[0])
             exit(1)
     print("[INFO] 测试结束")
